@@ -13,17 +13,17 @@ from scipy.integrate import odeint, ode
 # parametros
 
 # parametros del sistema
-m     = 1e-10              # inercia
+m     = 2.              # inercia
 k     = 1 / 8e-6        # elasticidad
-b     = .2              # disipacion
+b     = 2               # disipacion
 F_ext = 0.0             # \_ amplitud y frecuencia del forzante
-w_ext = 0.0             # /
+w_ext = 240.0           # /
 
 # condiciones iniciales
-y0 = [1.0, 0.0]         # posicion y momento iniciales
+y0 = [0.0, 0.0]         # posicion y momento iniciales
 
 # coordenadas temporales para la solucion de la ecuación diferencial
-t  = np.linspace(0, .5e-5, 100000)
+t  = np.linspace(0, 10, 1000000)
 
 # parametros derivados
 gamma = b / m
