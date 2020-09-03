@@ -33,7 +33,7 @@ t_max    = .8       # tiempo maximo
 n_puntos = 10000    # cantidad de samples, debe ser entero
 
 
-# a contianuación hay cambios en los parametros pensados para mostrar los diferentes
+# a continuación hay cambios en los parametros pensados para mostrar los diferentes
 # regimenes del oscilador. comentar y descomentar para activarlos.
 
 # oscilador sub-amortiguado con disipación
@@ -57,8 +57,8 @@ n_puntos = 10000    # cantidad de samples, debe ser entero
 # t_max = .025
 
 # oscilador sobreamortiguado
-b     = 2000.
-t_max = .05
+# b     = 2000.
+# t_max = .05
 
 # oscilador con inercia despreciable (estilo circuito RC)
 # m = 1e-10
