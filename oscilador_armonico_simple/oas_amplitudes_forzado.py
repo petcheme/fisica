@@ -44,18 +44,18 @@ fig, ejes = plt.subplots()
 
 ejes.plot(wext, A, label = 'A, en fase, elastica')
 ejes.plot(wext, B, label = 'B, en cuadratura, absorbente')
-
-
-plt.legend()
-plt.show()
-
-fig, ejes2 = plt.subplots()
-
-ejes2.plot(wext, B / A, label = 'B / A')
-
+plt.xlabel('b (Ns/m)')
+plt.ylabel('Amplitud (m)')
 
 plt.legend()
 plt.show()
+
+# fig, ejes2 = plt.subplots()
+
+# ejes2.plot(wext, B / A, label = 'B / A')
+
+# plt.legend()
+# plt.show()
 
 
 
