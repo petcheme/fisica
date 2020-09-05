@@ -131,4 +131,5 @@ dmypy.json
 # Personalizados
 .DS_Store
 untitled*.py
+Untitled*.py
 __*__/
