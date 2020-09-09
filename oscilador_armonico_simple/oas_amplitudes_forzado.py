@@ -20,7 +20,7 @@ b = 20          # coef disipacion
 Fext = 1        # amplitud fuerza externa
 
 n_puntos = 1000
-wext = np.linspace(100, 400, n_puntos)
+wext = np.linspace(200, 300, n_puntos)
 
 
 
@@ -42,10 +42,10 @@ B = a0 * wext * gamma / denominador
 
 fig, ejes = plt.subplots()
 
-ejes.plot(wext, A, label = 'A, en fase, elastica')
-ejes.plot(wext, B, label = 'B, en cuadratura, absorbente')
-plt.xlabel('b (Ns/m)')
-plt.ylabel('Amplitud (m)')
+ejes.plot(wext, A, label = 'A, elastica')
+ejes.plot(wext, B, label = 'B, absorbente')
+plt.xlabel('$\omega_{ext}$ [mks]')
+plt.ylabel('Amplitud [mks]')
 
 plt.legend()
 plt.show()
