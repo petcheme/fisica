@@ -52,8 +52,17 @@ n_puntos = 10000    # cantidad de samples, debe ser entero
 # b     = 950.
 # t_max = .05
 
-# oscilador critico
+# ídem anterior, detalle de la oscilación
+# b     = 950.
+# t_min = .035
+# t_max = .055
+
+# oscilador critico (en realidad ya no es un oscilador...)
 # b     = 1000.
+# t_max = .025
+
+# oscilador sobreamortiguado muy cerca del límite critico
+# b     = 1080.
 # t_max = .025
 
 # oscilador sobreamortiguado
@@ -61,8 +70,8 @@ n_puntos = 10000    # cantidad de samples, debe ser entero
 # t_max = .05
 
 # oscilador con inercia despreciable (estilo circuito RC)
-# m = 1e-10
-# t_max = .5e-5
+# m = 1e-12
+# t_max = 1e-9
 
 
 
@@ -223,15 +232,18 @@ elif (np.imag(w) != 0) & (np.real(w) == 0): # regimen sobre-amortiguado
 
     ejes1.plot(eje_t, np.exp(-eje_t/tau) *(A + B*eje_t), '--', linewidth=1, label='sol. crit.' )
     
-    ejes1.plot(eje_t, 0.5*np.real(np.exp(-eje_t *(1 / tau + 1j*w ))*( A + B / 1j)), '--', label='lenta') 
-    ejes1.plot(eje_t, 0.5*np.real(np.exp(-eje_t *(1 / tau - 1j*w ))*( A - B / 1j)), '--', label='rapida')
-    
+    # ejes1.plot(eje_t, 0.5*np.real( (A + B/1j/w)*np.exp(lambda1*eje_t) ), '--', label='rapida') 
+    # ejes1.plot(eje_t, 0.5*np.real( (A - B/1j/w)*np.exp(lambda2*eje_t) ), '--', label='lenta')
+        
 else: # regimen critico
     print('El regimen del sistema es critico.')
     print('El tiempo caracteristico de decaimiento es %.2g' % (tau))
+    
+print('Las autofrecuencias son:')
+print('lambda1: ' + str(lambda1))
+print('lambda2: ' + str(lambda2))
 
-    
-    
+
 # nombres de los ejes
 plt.xlabel('t [mks]')
 plt.ylabel('x(t) [mks]')
