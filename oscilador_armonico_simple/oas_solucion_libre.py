@@ -70,9 +70,8 @@ n_puntos = 10000    # cantidad de samples, debe ser entero
 # t_max = .05
 
 # oscilador con inercia despreciable (estilo circuito RC)
-# m = 1e-12
-# t_max = 1e-9
-
+m = 1e-12
+t_max = 1e-8
 
 
 """ 2. solucion """
