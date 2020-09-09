@@ -61,32 +61,32 @@ lambda2  = -1j*w-1/tau
 # este grafico me permite obtener el limite entre sub- y sobre-amortiguado
 # ademas, dentro del regimen sub-amortiguado me permite comparar la frecuencia
 # de oscilacion del sistema con la frecuencia de resonancia (w0) (faltaria
-# agregar ese valor como referencia) 
-ejes1 = plt.subplot(2,2,1)
+# agregar ese valor como referencia)
 
-ejes1.plot(b, np.real(w), label = 'Re(w)')
-ejes1.plot(b, np.imag(w), label = 'Im(w)')
+fig1, ax1 = plt.subplots(nrows=2, ncols=2)
+fig1.set_size_inches(9, 6)
 
-plt.legend()
+ax1[0,0].plot(b, np.real(w), label = 'Re(w)')
+ax1[0,0].plot(b, np.imag(w), label = 'Im(w)')
+
+ax1[0,0].set(ylabel = '$\omega$ [$s^{-1}$]')
+ax1[0,0].legend()
 
 # --- grafico 2
 
 # muestro la parte imaginaria de lambda 1 y 2
-ejes2 = plt.subplot(2,2,2)
+ax1[0,1].plot(b, np.imag(lambda1), label = 'Im(lambda1)')
+ax1[0,1].plot(b, np.imag(lambda2), label = 'Im(lambda2)')
 
-ejes2.plot(b, np.imag(lambda1), label = 'Im(lambda1)')
-ejes2.plot(b, np.imag(lambda2), label = 'Im(lambda2)')
-
-plt.legend()
+ax1[0,1].legend()
 
 # --- grafico 3
 
 # muestro la constante de decaimiento tau, la cual nos da la tasa de perdida
 # de energia en el regimen sub-amortiguado
-ejes3 = plt.subplot(2,2,3)
-ejes3.plot(b, tau, linewidth = 1, label = 'tau')
-
-plt.legend()
+ax1[1,0].plot(b, tau, linewidth = 1, label = 'tau')
+ax1[1,0].set(xlabel = 'b [Ns/m]', ylabel = 'tau [s]')
+ax1[1,0].legend()
 
 # --- grafico 4
 
@@ -94,15 +94,13 @@ plt.legend()
 # ambos valores corresponden a tau. en el regimen sobreamortiguado, ambas
 # constantes de tiempo se bifurcan, dando lugar a un decaimiento lento y uno
 # rapido
-ejes4 = plt.subplot(2,2,4)
-ejes4.plot(b, -1/ np.real(lambda1), label = '1 / Re(lambda1) rapido')
-ejes4.plot(b, -1/ np.real(lambda2), label = '1 / Re(lambda2) lento')
-ejes4.plot(b, tau, '--', linewidth = 1, label = 'tau')                     # agrego como referencia tau
 
-plt.legend()
+ax1[1,1].plot(b, -1/ np.real(lambda1), label = '1 / Re(lambda1) rapido')
+ax1[1,1].plot(b, -1/ np.real(lambda2), label = '1 / Re(lambda2) lento')
+ax1[1,1].plot(b, tau, '--', linewidth = 1, label = 'tau')                     # agrego como referencia tau
 
+ax1[1,1].legend()
+ax1[1,1].set(xlabel = 'b [Ns/m]')
 
-
-
-plt.legend()
+# plt.legend()
 plt.show()
