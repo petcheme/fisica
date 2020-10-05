@@ -127,15 +127,4 @@ plt.show()
 # Writer = animation.writers['ffmpeg']
 # writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 # ani.save(filename="movie.mp4", writer=writer)      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
