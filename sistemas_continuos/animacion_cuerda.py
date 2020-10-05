@@ -9,12 +9,16 @@ Created on Mon Sep 28 18:15:48 2020
 import matplotlib.pyplot    as plt
 import matplotlib.animation as animation
 import numpy as np
-import time
+import numpy.matlib
 
 
 """ 1. parametros de entrada """
 
-# cuerda
+plot_modos = True
+
+# parámetros del ejercicio 22, guía 1:
+
+# características de la cuerda
 L = 1                   # longitud de la cuerda
 c = 1                   # velocidad de propagación de ondas en la cuerda
 
@@ -23,12 +27,13 @@ psi_0 = 1               # amplitud inicial
 alpha = .25             # posición del escalón, va entre 0 y 1
 
 # exactitud de la solución
-n_modos = 150          # cuantos modos quiero sumar
+n_modos = 200          # cuantos modos quiero sumar
 
 n_ciclos      = 1       # cuantos ciclos del fundamental dura la simulación
-sample_rate_t = 200     # frecuencia de sampleo temporal
+sample_rate_t = 500     # frecuencia de sampleo temporal
 
-n_samples_x = 300       # cuantos puntos grafico en la coordenada x
+n_samples_x = 2000       # cuantos puntos grafico en la coordenada x
+
 
 
 """ 2. parametros derivados """
@@ -53,6 +58,7 @@ plt.xticks(np.linspace(1, max_modo, num=max_modo))
 ax_a.set_xlabel('m')
 ax_a.set_ylabel('A_m')
 
+
 # 3b. solución en función del tiempo
 
 # parametros del fundamental
@@ -62,14 +68,22 @@ periodo_fund = 1 / frec_fund
 
 # ejes de tiempo y de posición
 eje_tiempo   = np.linspace(start=0, stop=n_ciclos*periodo_fund, num=n_samples_t)
-eje_posicion = np.linspace(start=0, stop=L, num=n_samples_x)
+eje_posicion = np.linspace(start=-L, stop=2*L, num=n_samples_x)
 
 
 # preparo el grafico para hacer la animacion
 fig_psi   = plt.figure()
-ax_psi    = plt.axes(xlim=(0,L),ylim=(-2,2))
+ax_psi    = plt.axes(xlim=(-L,2*L),ylim=(-1.1,1.1))
 line_psi, = ax_psi.plot(eje_posicion, 0*eje_posicion)
 
+plt.xticks(ticks=[-1,0,1,2],labels=['-L','0','L','2L'])
+
+if plot_modos:
+    lin_modos = np.matlib.repmat(line_psi,3,1)
+    
+    for i in np.arange(0,3):
+        lin_modos[i], = ax_psi.plot(eje_posicion, 0*eje_posicion,lw=1)
+    
 ax_psi.set_xlabel('x')
 ax_psi.set_ylabel('Psi')
 
@@ -90,11 +104,12 @@ def sol_temp(t):
     # sumo todos los modos normales (sumo las columnas del array)
     sol_total = np.sum(solucion, axis=0)
     
+    plt.title('t={:.2f}'.format(t))
+    
     # agrego el grafico de los primeros 3 modos
-    for i in np.arange(0, 3):
-        1
-        # ax_psi.plot(eje_posicion, solucion[i,])
-        # line_psi.update_y(solucion)
+    if plot_modos:
+        for i in np.arange(0, 3):
+            lin_modos[i,0].set_ydata(solucion[i,])
     
     
     line_psi.set_ydata(sol_total)
@@ -108,8 +123,10 @@ ani = animation.FuncAnimation(fig_psi, sol_temp, frames=eje_tiempo,
 
 plt.show()
 
-        
-        
+# ani.save('archivo.mp4')
+# Writer = animation.writers['ffmpeg']
+# writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+# ani.save(filename="movie.mp4", writer=writer)      
         
         
         
