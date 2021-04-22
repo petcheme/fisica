@@ -35,6 +35,8 @@ sample_rate_t = 500     # frecuencia de sampleo temporal
 n_samples_x = 2000       # cuantos puntos grafico en la coordenada x
 
 
+limite_y = 1.2
+
 
 """ 2. parametros derivados """
 n_samples_t = int(np.ceil(n_ciclos*sample_rate_t))
@@ -68,24 +70,32 @@ periodo_fund = 1 / frec_fund
 
 # ejes de tiempo y de posición
 eje_tiempo   = np.linspace(start=0, stop=n_ciclos*periodo_fund, num=n_samples_t)
-eje_posicion = np.linspace(start=-L, stop=2*L, num=n_samples_x)
+eje_posicion = np.linspace(start=0, stop=L, num=n_samples_x)
 
 
 # preparo el grafico para hacer la animacion
 fig_psi   = plt.figure()
-ax_psi    = plt.axes(xlim=(-L,2*L),ylim=(-1.1,1.1))
+ax_psi    = plt.axes(xlim=(0,L),ylim=(-limite_y, limite_y))
 line_psi, = ax_psi.plot(eje_posicion, 0*eje_posicion)
 
-plt.xticks(ticks=[-1,0,1,2],labels=['-L','0','L','2L'])
+# ticks del eje x
+# ax_psi.set_xticks(ticks=[-1,0,1,2])  
+# ax_psi.set_xticklabels(labels=['-L','0','L','2L'])
 
+ax_psi.set_xticks(ticks=[0,.25,.5,.75,1])  
+ax_psi.set_xticklabels(labels=['0','L/4','L/2','3/4L','L'])
+
+# etiquetas de ejes
+ax_psi.set_xlabel('x')
+ax_psi.set_ylabel('Psi')
+
+# ploteo los modos para acompañar?
 if plot_modos:
     lin_modos = np.matlib.repmat(line_psi,3,1)
     
     for i in np.arange(0,3):
         lin_modos[i], = ax_psi.plot(eje_posicion, 0*eje_posicion,lw=1)
     
-ax_psi.set_xlabel('x')
-ax_psi.set_ylabel('Psi')
 
 
 def sol_temp(t):
@@ -116,15 +126,8 @@ def sol_temp(t):
 
     return line_psi,
 
-# sol_temp(eje_tiempo[0])
-
 ani = animation.FuncAnimation(fig_psi, sol_temp, frames=eje_tiempo,
                               interval=100, repeat=False)
 
 plt.show()
-
-# ani.save('archivo.mp4')
-# Writer = animation.writers['ffmpeg']
-# writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-# ani.save(filename="movie.mp4", writer=writer)      
 
