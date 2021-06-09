@@ -9,6 +9,12 @@ Created on Thu Nov  5 19:12:33 2020
 import numpy as np
 import matplotlib.pyplot as plt
 
+# para usar latex
+from matplotlib import rc
+#rc('font', **{'family':'serif','serif':['Palatino']})
+rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+rc('text', usetex=True)
+
 Sa = 2
 Sb = 1
 J0 = np.array(((Sa),(Sb*1j)), ndmin=2).T 
@@ -40,14 +46,13 @@ ax.plot(square_x, square_y, color='lightgray')
 ax.plot((-Sa*np.cos(alpha), Sa*np.cos(alpha)), (-Sa*np.sin(alpha), Sa*np.sin(alpha)), color='mediumseagreen', linestyle='--')
 ax.plot((-Sb*np.sin(alpha), Sb*np.sin(alpha)), (Sb*np.cos(alpha), -Sb*np.cos(alpha)), color='mediumseagreen', linestyle='--')
          
-         
 # amplitudes en x e y
 ax.plot((0,np.abs(Ax)), (-np.abs(Ay)-.1,-np.abs(Ay)-.1), color='red')
 ax.plot((-np.abs(Ax)-.1,-np.abs(Ax)-.1), (0,np.abs(Ay)), color='red')
 
 pos=0.5
-ax.annotate('$|A_x|$',(-np.abs(Ax)-.5,pos+.1), fontsize=18, color='red')
-ax.annotate('$|A_y|$',(pos+.2,-np.abs(Ay)-.4), fontsize=20, color='red')
+ax.annotate('$|A_x|$',(pos+.2,-np.abs(Ay)-.4), fontsize=20, color='red')
+ax.annotate('$|A_y|$',(-np.abs(Ax)-.5,pos+.1), fontsize=18, color='red')
 
 # ejes de coordenadas
 dx=0.6
@@ -63,15 +68,15 @@ ax.plot(np.real(Ax*np.exp(1j*fases)),
         np.real(Ay*np.exp(1j*fases)))
 
 # angulo
-
-
 angulos = np.linspace(0,alpha,num=100)
 rr=0.5
 ax.plot(rr*np.cos(angulos), rr*np.sin(angulos),color='royalblue')
+
+# la r antes del string es para usar latex
+ax.annotate(r'$\alpha$',(rr*np.cos(angulos[-1])-.05,
+                         rr*np.sin(angulos[-1])+.05), fontsize=20, color='royalblue')
 
 # misc
 ax.set_xlim((-3,3))
 ax.set_ylim((-2,2))
 ax.axis('off')
-
-
