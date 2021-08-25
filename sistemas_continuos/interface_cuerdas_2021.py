@@ -12,16 +12,16 @@ import numpy as np
 import scipy.optimize
 
 """ 1. Parametros y definicion de funciones """
-c1 = 1.             # velocidad de propagacion medio 1
-c2 = 3.             # velocidad de propagacion medio 2
+c1 = 3.             # velocidad de propagacion medio 1
+c2 = 1.             # velocidad de propagacion medio 2
 L  = 1.             # longitud completa de la cuerda
-alpha = .2          # fracción de la cuerda donde se encuentra la interface
+alpha = 3. / 4.          # fracción de la cuerda donde se encuentra la interface
 
 L1 = alpha*L        # longitud del lado izquierdo
 L2 = L - L1         # longitud del lado derecho
 
 # valores de k2 que voy a probar
-k2_prueba = np.linspace(start=0, stop=16, num=20000)
+k2_prueba = np.linspace(start=0, stop=160, num=20000)
 
 epsilon = 1e-1      # parametro de comparacion para buscar candidatos
 
@@ -134,21 +134,25 @@ print('')
 
 
 # parametros para los graficos
-eje_x = np.linspace(-L1,  L2, num =100000)      # \_ armo el eje x para cada tramo
+samples_x = 1000
+eje_x = np.linspace(-L1,  L2, num = samples_x)      # \_ armo el eje x para cada tramo
 x1    = eje_x[eje_x < 0]                        # |
 x2    = eje_x[eje_x >= 0]                       # /
 
 cuantos_modos = 8
-plot_derivada = True
+plot_derivada = False
 
 
 # graficos
-cuantos_modos = min(cuantos_modos, max_candidatos-1)
+cuantos_modos = min(cuantos_modos, max_candidatos-1, k2_finales.size-1)
 
 my_colormap   = iter(cm.rainbow(np.linspace(0,1,cuantos_modos)))
 
 fig_modos, ax_modos = plt.subplots()
-fig_deriv, ax_deriv = plt.subplots(nrows= cuantos_modos)
+if (plot_derivada):
+    fig_deriv, ax_deriv = plt.subplots(nrows= cuantos_modos)
+
+lista_modos = np.zeros([cuantos_modos, samples_x])
 
 for modo in np.arange(start=1, stop=cuantos_modos+1, step=1):
 
@@ -168,13 +172,94 @@ for modo in np.arange(start=1, stop=cuantos_modos+1, step=1):
     eje_y = np.concatenate((y1, y2))                # concateno
     eje_y = eje_y / np.max(abs(eje_y))              # normalizo
     
+    lista_modos[modo-1,:] = eje_y
+    
     # ploteo 
     my_color = next(my_colormap)
     ax_modos.plot(eje_x, eje_y, c=my_color)
+    ax_modos.set_title('ccc')
     
     if (plot_derivada):
         
         ax_deriv[modo-1].plot(x1[1:], np.diff(y1) / np.diff(x1))
         ax_deriv[modo-1].plot(x2[:-1], np.diff(y2) / np.diff(x2))
         ax_deriv[modo-1].set_title('Modo: ' + str(modo) + '; k1=' + str(k1) + '; k2=' + str(k2))
+
+# producto interno
+if (False):
+    producto_interno = np.zeros([cuantos_modos, cuantos_modos])
+    
+    for n1 in np.arange(start=0, stop=cuantos_modos, step=1):
+        for n2 in np.arange(start=n1, stop=cuantos_modos, step=1):
+            producto_interno[n1,n2] = sum(lista_modos[n1,:] * lista_modos[n2,:]) / (eje_x[1] - eje_x[0])
+            
+    plt.matshow(producto_interno)
+    plt.colorbar()
+
+
+# quiero comparar con el sistema discretizado
+
+n_masas = 1000
+
+m1 = 1.
+m2 = m1*c1**2/c2**2
+
+n1 = int(np.floor(alpha*n_masas))
+n2 = n_masas - n1
+
+vector_masas = np.zeros(n_masas)
+vector_masas[0:n1] = m1
+vector_masas[n1:n1+n2] = m2
+
+
+
+M = np.diag(vector_masas)
+K = np.diag(2*np.ones(n_masas)) - np.diag(np.ones(n_masas-1),-1) \
+                                - np.diag(np.ones(n_masas-1),+1)
+W = np.matmul(np.linalg.inv(M), K)                       
+w, v = np.linalg.eig(W)
+
+idx = np.argsort(w)
+w = w[idx]
+v = v[:,idx]
+
+# Quiero ver la similitud entre autovectores del caso discreto y funciones de
+# modos del caso continuo. Para esto elegi a proposito que la cantidad de
+# masas del caso discreto sea la misma que la cantidad de samples del eje x del
+# caso continuo
+# OJO! Para el caso continuo recolectamos ciertos modos en funcion de la
+# resolucion de la ecuación trascendental, pudimos haber olvidado algunos.
+# Chequear eso si hay discrepancias.
+que_modo = 0
+fig, ax = plt.subplots()
+ax.plot(v[:,que_modo] / max(v[:,que_modo]))
+ax.plot(lista_modos[que_modo,:] / max(lista_modos[que_modo,:]))
+ax.set_title('Modo discreto vs continuo: ' + str(que_modo))
+
+# otra forma de verlo
+# ax.plot(v[:,0], lista_modos[0,:])
+
+# ahora quiero ver la matriz de autovectores inversa
+v_inv = np.linalg.inv(v)
+que_modo = 0
+fig, ax = plt.subplots()
+ax.scatter(range(n_masas), v_inv[que_modo,:])      # <- ahora son vectores fila!!
+ax.set_title('Anti-modo ' + str(que_modo))
+
+# comparo un modo con su "antimodo"
+tabla = np.zeros([n_masas, 2])
+
+for que_modo in np.arange(0, n_masas, step=1):
+    cociente = v_inv[que_modo,:] / v[:,que_modo]
+    tabla[que_modo, 0] = np.mean(cociente[0:n1])
+    tabla[que_modo, 1] = np.mean(cociente[n1:n1+n2])
+    
+    if (False):
+        fig, ax = plt.subplots()
+        ax.scatter(range(n_masas), cociente) 
+        ax.set_title('Comparacion modo y anti-modo ' + str(que_modo))
+
+fig, ax = plt.subplots()
+ax.plot(tabla[:,0])
+
 
