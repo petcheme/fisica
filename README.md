@@ -10,7 +10,7 @@ A continuación el índice de cdigos disponibles
   https://github.com/petcheme/fisica/blob/master/oscilador_armonico_simple/oas_calculadora_de_parametros.ipynb
   https://github.com/petcheme/fisica/blob/master/oscilador_armonico_simple/oas_calculadora_de_parametros_2021.ipynb
 
-  La que vimos en clase y una versión similar anterior.
+  La que vimos en clase ([oas_calculadora_de_parametros.ipynb](oscilador_armonico_simple/oas_calculadora_de_parametros.ipynb)) y una versión similar anterior.
 
   https://github.com/petcheme/fisica/blob/master/oscilador_armonico_simple/oas_autovalores.py
 
