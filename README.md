@@ -5,16 +5,11 @@ A continuación el índice de cdigos disponibles
 
 ## Oscilador armónico simple:
 
-1. Calculadora de parámetros:
+1. Calculadora de parámetros (notebooks):
 
-  https://github.com/petcheme/fisica/blob/master/oscilador_armonico_simple/oas_calculadora_de_parametros.ipynb
-  https://github.com/petcheme/fisica/blob/master/oscilador_armonico_simple/oas_calculadora_de_parametros_2021.ipynb
+  * La que vimos en clase ([oas_calculadora_de_parametros_2021.ipynb](oscilador_armonico_simple/oas_calculadora_de_parametros_2021.ipynb)) y una versión similar anterior ([oas_calculadora_de_parametros.ipynb](oscilador_armonico_simple/oas_calculadora_de_parametros.ipynb)).
 
-  La que vimos en clase ([oas_calculadora_de_parametros.ipynb](oscilador_armonico_simple/oas_calculadora_de_parametros.ipynb)) y una versión similar anterior.
-
-  https://github.com/petcheme/fisica/blob/master/oscilador_armonico_simple/oas_autovalores.py
-
-  Variación de la frecuencia (compleja) en función de la disipación.
+  * Variación de la frecuencia (compleja) en función de la disipación ([oas_autovalores.py](oscilador_armonico_simple/oas_autovalores.py), script).
 
 2. Oscilador libre con disipación:
 
